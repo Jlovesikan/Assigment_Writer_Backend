@@ -84,4 +84,54 @@ const userRegistraion =async(req,res)=>{
        }
     };
 
-module.exports = {userRegistraion,verifyUser};
+
+const loginUser=async(req,res)=>{
+    try {
+      const {email,password}=req.body;  
+      const user=await User.findOne({email});
+      if(!user){
+        return res.status(400).json({
+            message:"Invaild Email",
+        });
+      };
+      
+      const checkPassword=await bcrypt.compare(password,user.password);
+      if(!checkPassword){
+        return res.status(400).json({
+            message:"Invaild Password",
+        });
+      }
+
+      const token=jwt.sign({_id:user.id},process.env.JWT_SECRET,{expiresIn:"20d"})
+      const {password:userPassword,...userDetails}=user.toObject();
+
+      return res.status(200).json({
+        message:`Welcome To Woocurs Academy... ${user.name}`,
+        token,
+        user:userDetails,
+      })
+    } catch (error) {
+      return res.json({
+        message:error.message,
+      })
+    }
+} ; 
+
+const Profile=async(req,res)=>{
+    try {
+        const user=await User.findById(req.user._id).select("-password");
+        return res.status(200).json({
+            user,
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message,
+        });
+    };
+};
+
+
+
+
+module.exports = {userRegistraion,verifyUser,loginUser,Profile};
