@@ -57,6 +57,34 @@ const getallReview=async(req,res)=>{
     }
 }
 
+//get single review
+
+const getsingleReview=async(req,res)=>{
+    try {
+        const id=req.params.id;
+        if(!id){
+            return res.status(400).json({
+                message:"Invalid Id.."
+            })
+        }
+
+        const singlereview = await Review.findById(id);
+        if(!singlereview){
+            message:"no any review..."
+        }
+
+        return res.status(200).json({
+            success:true,
+            message:"get single review..",
+            singlereview,
+        })
+    } catch (error) {
+       return res.status(500).json({
+        message:error.message,
+       }) 
+    }
+}
+
 //delete review
 const deleteReview=async(req,res)=>{
     try {
@@ -91,5 +119,43 @@ const deleteReview=async(req,res)=>{
     }
 }
 
+//update review
 
-module.exports={createReview,getallReview,deleteReview};
+const updateReview=async(req,res)=>{
+    try {
+        const {name,email,review,message}=req.body;
+        
+        const id=req.params.id;
+        if(!id){
+            return res.status(400).json({
+                message:"invalid id..."
+            })
+        }
+        const updatereview=await Review.findById(id);
+        if(!updatereview){
+            return res.status(400).json({
+                message:"no any review..."
+            })
+        }
+
+        if(name)updatereview.name=name;
+        if(email)updatereview.email=email;
+        if(review)updatereview.review=review;
+        if(message)updatereview.message=message;
+
+        await updatereview.save();
+
+        return res.status(200).json({
+            success:true,
+            message:"update succesfull...",
+            updatereview
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message,
+        })
+    }
+}
+
+
+module.exports={createReview,getallReview,deleteReview,getsingleReview,updateReview};
