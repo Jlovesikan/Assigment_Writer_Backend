@@ -1,5 +1,6 @@
 const multer = require("multer");
 const { v4: uuid } = require("uuid");
+const { imageFilter, documentFilter } = require("../middleware/fileFilter.js");
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -17,6 +18,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploadFiles = multer({ storage }).array("files", 5);
+const uploadImage = multer({
+  storage,
+  fileFilter: imageFilter,
+});
 
-module.exports = { uploadFiles };
+const uploadDocs = multer({
+  storage,
+  fileFilter: documentFilter,
+});
+
+module.exports = { uploadImage, uploadDocs };
+

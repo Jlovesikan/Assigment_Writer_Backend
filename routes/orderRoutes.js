@@ -1,6 +1,6 @@
 const express = require("express");
 const { addOrder,fetchallOrders,fetchoneOrder,deleteOrder,updateOne,statusUpdate} = require("../contollers/order");
-const { uploadFiles } = require("../middleware/multer");
+const { uploadDocs } = require("../middleware/multer");
 const isAuth = require("../middleware/isAuth");
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
   "/order/new",
   isAuth,
-  uploadFiles,
+  uploadDocs.array("files", 5),
   addOrder
 );
 
