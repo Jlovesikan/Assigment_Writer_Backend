@@ -61,6 +61,37 @@ const fetchallServices=async(req,res)=>{
     }
 }
 
+//get single services
+const fetchOneservice =async(req,res)=>{
+    try {
+      const id=req.params.id;
+      if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).json({
+            message:"invalid id"
+        })
+      }
+      
+      const fetchoneservice=await Service.findById(id);
+
+      if(!fetchoneservice){
+        return res.status(400).json({
+            message:"No any service find..."
+        })
+      }
+
+      return res.status(200).json({
+        success:true,
+        message:"find one service",
+        fetchoneservice,
+      })
+        
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message,
+        })
+    }
+}
+
 //update service
 const updateService=async(req,res)=>{
     try {
@@ -100,6 +131,7 @@ const updateService=async(req,res)=>{
     }
 }
 
+
 //delete services
 const deleteServices=async(req,res)=>{
     try {
@@ -133,4 +165,4 @@ const deleteServices=async(req,res)=>{
     }
 }
 
-module.exports = { createService,fetchallServices,updateService,deleteServices};
+module.exports = { createService,fetchallServices,updateService,deleteServices,fetchOneservice};

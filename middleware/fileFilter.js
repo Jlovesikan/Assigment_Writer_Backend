@@ -18,9 +18,9 @@ const imageFilter=(req,file,cb)=>{
     "image/jpeg",
     "image/jpg",
     "image/png",
+    "image/x-icon",
   ];
 
-   console.log("Uploaded MIME:", file.mimetype);
 
   if(allowedImage.includes(file.mimetype)){
     cb(null,true)

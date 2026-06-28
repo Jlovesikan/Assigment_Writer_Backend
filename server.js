@@ -6,6 +6,7 @@ const adminRoutes=require("./routes/adminRoutes.js");
 const contactRoutes=require("./routes/contactRoutes.js");
 const reviewRoutes=require("./routes/reviewRoutes.js");
 const serviceRoutes=require("./routes/serviceRoutes.js");
+const settingsRoutes=require("./routes/settingsRoutes.js")
 require("dotenv").config();
 
 const connectDB = require("./config/db");
@@ -29,7 +30,8 @@ app.use("/api", orderRoutes);
 app.use("/api", adminRoutes);
 app.use("/api",contactRoutes);
 app.use("/api", reviewRoutes);
-app.use("/api",serviceRoutes)
+app.use("/api",serviceRoutes);
+app.use("/api",settingsRoutes);
 
 const PORT = process.env.PORT;
 
